@@ -19,7 +19,7 @@ const MASTER_DATA = {
 function computeMetrics(d: typeof MASTER_DATA) {
   return {
     profitability: [
-      { key: "margenBruto", label: "Margen Bruto", value: d.utilidadBruta / d.ventas, fmt: "pct", tooltip: "Utilidad Bruta / Ventas" },
+      { key: "margenBruto", label: "Margen Bruto", value: d.utilidadBruta / d.ventas, fmt: "pct" as const, tooltip: "Utilidad Bruta / Ventas" },
       { key: "margenOperativo", label: "Margen Operativo", value: d.ebit / d.ventas, fmt: "pct", tooltip: "EBIT / Ventas" },
       { key: "margenNeto", label: "Margen Neto", value: d.utilidadNeta / d.ventas, fmt: "pct", tooltip: "Utilidad Neta / Ventas" },
       { key: "roa", label: "ROA", value: d.utilidadNeta / d.activosTotales, fmt: "pct", tooltip: "Utilidad Neta / Activos Totales" },
