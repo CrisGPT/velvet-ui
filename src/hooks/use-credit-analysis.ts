@@ -30,8 +30,8 @@ function computeMetrics(d: typeof MASTER_DATA) {
       { key: "acidTest", label: "Prueba Ácida", value: (d.activoCirculante - d.inventarios) / d.pasivoCirculante, fmt: "x" as const, tooltip: "(Activo Circulante − Inventarios) / Pasivo Circulante" },
     ],
     efficiency: [
-      { key: "rotInv", label: "Rot. Inventarios", value: d.costoDeVentas / d.inventarioPromedio, fmt: "x", tooltip: "Costo de Ventas / Inventario Promedio" },
-      { key: "rotCxC", label: "Rot. CxC", value: d.ventasCredito / d.cxcPromedio, fmt: "x", tooltip: "Ventas a Crédito / CxC Promedio" },
+      { key: "rotInv", label: "Rot. Inventarios", value: d.costoDeVentas / d.inventarioPromedio, fmt: "x" as const, tooltip: "Costo de Ventas / Inventario Promedio" },
+      { key: "rotCxC", label: "Rot. CxC", value: d.ventasCredito / d.cxcPromedio, fmt: "x" as const, tooltip: "Ventas a Crédito / CxC Promedio" },
     ],
     leverage: [
       { key: "debtRatio", label: "Razón de Deuda", value: d.pasivoTotal / d.activosTotales, fmt: "pct", tooltip: "Pasivo Total / Activo Total" },
