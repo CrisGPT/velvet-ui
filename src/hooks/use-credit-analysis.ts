@@ -20,10 +20,10 @@ function computeMetrics(d: typeof MASTER_DATA) {
   return {
     profitability: [
       { key: "margenBruto", label: "Margen Bruto", value: d.utilidadBruta / d.ventas, fmt: "pct" as const, tooltip: "Utilidad Bruta / Ventas" },
-      { key: "margenOperativo", label: "Margen Operativo", value: d.ebit / d.ventas, fmt: "pct", tooltip: "EBIT / Ventas" },
-      { key: "margenNeto", label: "Margen Neto", value: d.utilidadNeta / d.ventas, fmt: "pct", tooltip: "Utilidad Neta / Ventas" },
-      { key: "roa", label: "ROA", value: d.utilidadNeta / d.activosTotales, fmt: "pct", tooltip: "Utilidad Neta / Activos Totales" },
-      { key: "roe", label: "ROE", value: d.utilidadNeta / d.capitalContable, fmt: "pct", tooltip: "Utilidad Neta / Capital Contable" },
+      { key: "margenOperativo", label: "Margen Operativo", value: d.ebit / d.ventas, fmt: "pct" as const, tooltip: "EBIT / Ventas" },
+      { key: "margenNeto", label: "Margen Neto", value: d.utilidadNeta / d.ventas, fmt: "pct" as const, tooltip: "Utilidad Neta / Ventas" },
+      { key: "roa", label: "ROA", value: d.utilidadNeta / d.activosTotales, fmt: "pct" as const, tooltip: "Utilidad Neta / Activos Totales" },
+      { key: "roe", label: "ROE", value: d.utilidadNeta / d.capitalContable, fmt: "pct" as const, tooltip: "Utilidad Neta / Capital Contable" },
     ],
     liquidity: [
       { key: "currentRatio", label: "Current Ratio", value: d.activoCirculante / d.pasivoCirculante, fmt: "x", tooltip: "Activo Circulante / Pasivo Circulante" },
