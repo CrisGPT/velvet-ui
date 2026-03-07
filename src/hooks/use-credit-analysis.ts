@@ -34,8 +34,8 @@ function computeMetrics(d: typeof MASTER_DATA) {
       { key: "rotCxC", label: "Rot. CxC", value: d.ventasCredito / d.cxcPromedio, fmt: "x" as const, tooltip: "Ventas a Crédito / CxC Promedio" },
     ],
     leverage: [
-      { key: "debtRatio", label: "Razón de Deuda", value: d.pasivoTotal / d.activosTotales, fmt: "pct", tooltip: "Pasivo Total / Activo Total" },
-      { key: "debtEquity", label: "Deuda / Capital", value: d.pasivoTotal / d.capitalContable, fmt: "x", tooltip: "Pasivo Total / Capital Contable" },
+      { key: "debtRatio", label: "Razón de Deuda", value: d.pasivoTotal / d.activosTotales, fmt: "pct" as const, tooltip: "Pasivo Total / Activo Total" },
+      { key: "debtEquity", label: "Deuda / Capital", value: d.pasivoTotal / d.capitalContable, fmt: "x" as const, tooltip: "Pasivo Total / Capital Contable" },
     ],
   };
 }
