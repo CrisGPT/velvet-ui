@@ -26,8 +26,8 @@ function computeMetrics(d: typeof MASTER_DATA) {
       { key: "roe", label: "ROE", value: d.utilidadNeta / d.capitalContable, fmt: "pct" as const, tooltip: "Utilidad Neta / Capital Contable" },
     ],
     liquidity: [
-      { key: "currentRatio", label: "Current Ratio", value: d.activoCirculante / d.pasivoCirculante, fmt: "x", tooltip: "Activo Circulante / Pasivo Circulante" },
-      { key: "acidTest", label: "Prueba Ácida", value: (d.activoCirculante - d.inventarios) / d.pasivoCirculante, fmt: "x", tooltip: "(Activo Circulante − Inventarios) / Pasivo Circulante" },
+      { key: "currentRatio", label: "Current Ratio", value: d.activoCirculante / d.pasivoCirculante, fmt: "x" as const, tooltip: "Activo Circulante / Pasivo Circulante" },
+      { key: "acidTest", label: "Prueba Ácida", value: (d.activoCirculante - d.inventarios) / d.pasivoCirculante, fmt: "x" as const, tooltip: "(Activo Circulante − Inventarios) / Pasivo Circulante" },
     ],
     efficiency: [
       { key: "rotInv", label: "Rot. Inventarios", value: d.costoDeVentas / d.inventarioPromedio, fmt: "x", tooltip: "Costo de Ventas / Inventario Promedio" },
