@@ -1,5 +1,8 @@
-// Simulated MASTER dataset financial data
-const MASTER_DATA = {
+import { useFinancialStore } from "@/stores/financial-store";
+import type { MasterDataset } from "@/lib/financial/types";
+
+// Fallback simulated data when no MASTER is available
+const FALLBACK_DATA = {
   ventas: 293500,
   costoDeVentas: 176100,
   utilidadBruta: 117400,
@@ -16,7 +19,26 @@ const MASTER_DATA = {
   inventarioPromedio: 58000,
 };
 
-function computeMetrics(d: typeof MASTER_DATA) {
+function fromMaster(m: MasterDataset) {
+  return {
+    ventas: m.ventas,
+    costoDeVentas: m.costoDeVentas,
+    utilidadBruta: m.utilidadBruta,
+    ebit: m.ebit,
+    utilidadNeta: m.utilidadNeta,
+    activosTotales: m.activosTotales,
+    activoCirculante: m.activoCirculante,
+    inventarios: m.inventarios,
+    pasivoTotal: m.pasivoTotal,
+    pasivoCirculante: m.pasivoCirculante,
+    capitalContable: m.capitalContable,
+    cxcPromedio: m.cuentasPorCobrar || 48500,
+    ventasCredito: m.ventas * 0.75,
+    inventarioPromedio: m.inventarios || 58000,
+  };
+}
+
+function computeMetrics(d: typeof FALLBACK_DATA) {
   return {
     profitability: [
       { key: "margenBruto", label: "Margen Bruto", value: d.utilidadBruta / d.ventas, fmt: "pct" as const, tooltip: "Utilidad Bruta / Ventas" },
@@ -44,37 +66,31 @@ type Rating = "A" | "B" | "C" | "R";
 
 function computeScore(metrics: ReturnType<typeof computeMetrics>): { score: number; rating: Rating; label: string } {
   let score = 0;
-  const m = metrics;
 
-  // Profitability (max 30)
-  const margenNeto = m.profitability[2].value;
+  const margenNeto = metrics.profitability[2].value;
   if (margenNeto > 0.25) score += 30;
   else if (margenNeto > 0.15) score += 24;
   else if (margenNeto > 0.05) score += 15;
   else score += 5;
 
-  // ROE (max 15)
-  const roe = m.profitability[4].value;
+  const roe = metrics.profitability[4].value;
   if (roe > 0.2) score += 15;
   else if (roe > 0.1) score += 10;
   else score += 4;
 
-  // Current Ratio (max 20)
-  const cr = m.liquidity[0].value;
+  const cr = metrics.liquidity[0].value;
   if (cr > 2) score += 20;
   else if (cr > 1.5) score += 16;
   else if (cr > 1) score += 10;
   else score += 3;
 
-  // Debt Ratio (max 20) — lower is better
-  const dr = m.leverage[0].value;
+  const dr = metrics.leverage[0].value;
   if (dr < 0.3) score += 20;
   else if (dr < 0.5) score += 15;
   else if (dr < 0.7) score += 8;
   else score += 2;
 
-  // Efficiency (max 15)
-  const rotInv = m.efficiency[0].value;
+  const rotInv = metrics.efficiency[0].value;
   if (rotInv > 4) score += 15;
   else if (rotInv > 2) score += 10;
   else score += 4;
@@ -129,45 +145,56 @@ function generateDecision(rating: Rating, metrics: ReturnType<typeof computeMetr
   return { strengths, weaknesses, risks, recommendation: recMap[rating] };
 }
 
-const chartData = {
-  revenueTrend: [
-    { mes: "Ene", ingresos: 42000, gastos: 28000 },
-    { mes: "Feb", ingresos: 38500, gastos: 31000 },
-    { mes: "Mar", ingresos: 51000, gastos: 27500 },
-    { mes: "Abr", ingresos: 47800, gastos: 33000 },
-    { mes: "May", ingresos: 53200, gastos: 29800 },
-    { mes: "Jun", ingresos: 61000, gastos: 35400 },
-  ],
-  margins: [
-    { mes: "Ene", bruto: 0.40, operativo: 0.28, neto: 0.22 },
-    { mes: "Feb", bruto: 0.38, operativo: 0.25, neto: 0.19 },
-    { mes: "Mar", bruto: 0.46, operativo: 0.32, neto: 0.27 },
-    { mes: "Abr", bruto: 0.41, operativo: 0.29, neto: 0.23 },
-    { mes: "May", bruto: 0.44, operativo: 0.31, neto: 0.26 },
-    { mes: "Jun", bruto: 0.42, operativo: 0.30, neto: 0.25 },
-  ],
-  leverage: [
-    { mes: "Ene", deuda: 0.40, deudaCapital: 0.67 },
-    { mes: "Feb", deuda: 0.39, deudaCapital: 0.64 },
-    { mes: "Mar", deuda: 0.37, deudaCapital: 0.59 },
-    { mes: "Abr", deuda: 0.38, deudaCapital: 0.61 },
-    { mes: "May", deuda: 0.37, deudaCapital: 0.59 },
-    { mes: "Jun", deuda: 0.37, deudaCapital: 0.59 },
-  ],
-  liquidity: [
-    { mes: "Ene", current: 1.45, acid: 1.05 },
-    { mes: "Feb", current: 1.50, acid: 1.10 },
-    { mes: "Mar", current: 1.55, acid: 1.12 },
-    { mes: "Abr", current: 1.52, acid: 1.08 },
-    { mes: "May", current: 1.58, acid: 1.15 },
-    { mes: "Jun", current: 1.60, acid: 1.20 },
-  ],
-};
-
 export function useCreditAnalysis() {
-  const metrics = computeMetrics(MASTER_DATA);
+  const { master } = useFinancialStore();
+
+  const sourceData = master ? fromMaster(master) : FALLBACK_DATA;
+  const usingRealData = !!master;
+
+  const metrics = computeMetrics(sourceData);
   const { score, rating, label } = computeScore(metrics);
   const { strengths, weaknesses, risks, recommendation } = generateDecision(rating, metrics);
+
+  // Chart data: use MASTER monthly data if available, otherwise fallback
+  const chartData = master ? {
+    revenueTrend: master.monthlyRevenue,
+    margins: master.monthlyMargins,
+    leverage: master.monthlyLeverage,
+    liquidity: master.monthlyLiquidity,
+  } : {
+    revenueTrend: [
+      { mes: "Ene", ingresos: 42000, gastos: 28000 },
+      { mes: "Feb", ingresos: 38500, gastos: 31000 },
+      { mes: "Mar", ingresos: 51000, gastos: 27500 },
+      { mes: "Abr", ingresos: 47800, gastos: 33000 },
+      { mes: "May", ingresos: 53200, gastos: 29800 },
+      { mes: "Jun", ingresos: 61000, gastos: 35400 },
+    ],
+    margins: [
+      { mes: "Ene", bruto: 0.40, operativo: 0.28, neto: 0.22 },
+      { mes: "Feb", bruto: 0.38, operativo: 0.25, neto: 0.19 },
+      { mes: "Mar", bruto: 0.46, operativo: 0.32, neto: 0.27 },
+      { mes: "Abr", bruto: 0.41, operativo: 0.29, neto: 0.23 },
+      { mes: "May", bruto: 0.44, operativo: 0.31, neto: 0.26 },
+      { mes: "Jun", bruto: 0.42, operativo: 0.30, neto: 0.25 },
+    ],
+    leverage: [
+      { mes: "Ene", deuda: 0.40, deudaCapital: 0.67 },
+      { mes: "Feb", deuda: 0.39, deudaCapital: 0.64 },
+      { mes: "Mar", deuda: 0.37, deudaCapital: 0.59 },
+      { mes: "Abr", deuda: 0.38, deudaCapital: 0.61 },
+      { mes: "May", deuda: 0.37, deudaCapital: 0.59 },
+      { mes: "Jun", deuda: 0.37, deudaCapital: 0.59 },
+    ],
+    liquidity: [
+      { mes: "Ene", current: 1.45, acid: 1.05 },
+      { mes: "Feb", current: 1.50, acid: 1.10 },
+      { mes: "Mar", current: 1.55, acid: 1.12 },
+      { mes: "Abr", current: 1.52, acid: 1.08 },
+      { mes: "May", current: 1.58, acid: 1.15 },
+      { mes: "Jun", current: 1.60, acid: 1.20 },
+    ],
+  };
 
   return {
     metrics,
@@ -179,6 +206,8 @@ export function useCreditAnalysis() {
     risks,
     recommendation,
     chartData,
+    usingRealData,
+    empresa: master?.empresa || "Empresa (datos demo)",
     categories: [
       { name: "Rentabilidad", score: rating === "A" ? 28 : rating === "B" ? 22 : 14, max: 30 },
       { name: "Liquidez", score: rating === "A" ? 18 : rating === "B" ? 14 : 8, max: 20 },
