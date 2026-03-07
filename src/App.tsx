@@ -22,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/ProcesadorFinanciero" element={<ProcesadorFinanciero />} />
           <Route path="/EmpateDeClientes" element={<EmpateDeClientes />} />
+          <Route path="/DiagnosticoCrediticio" element={<DiagnosticoCrediticio />} />
           <Route path="/PredictorKPI" element={<PredictorKPI />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
