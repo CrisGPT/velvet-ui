@@ -14,7 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      credit_partners: {
+        Row: {
+          acepta_perdida: boolean
+          acepta_quiebra_tecnica: boolean
+          acepta_utilidad: boolean
+          arrendamiento: boolean
+          buro_bueno: boolean
+          buro_excelente: boolean
+          buro_regular: boolean
+          cobertura_estatal: boolean
+          cobertura_local: boolean
+          cobertura_nacional: boolean
+          cobertura_regional: boolean
+          created_at: string
+          credito_revolvente: boolean
+          credito_simple: boolean
+          exp_1_anio: boolean
+          exp_2_o_mas: boolean
+          exp_menor_1_anio: boolean
+          factoraje: boolean
+          garantia_aval: boolean
+          garantia_contratos: boolean
+          garantia_hipotecaria: boolean
+          garantia_liquida: boolean
+          garantia_patrimonial: boolean
+          garantia_prendaria: boolean
+          id: string
+          mal_buro: boolean
+          mas_rentable: boolean
+          name: string
+          sector_comercio: boolean
+          sector_industria: boolean
+          sector_primario: boolean
+          sector_servicios: boolean
+          tiene_contrato: boolean
+          tier: string
+          tipo: string
+        }
+        Insert: {
+          acepta_perdida?: boolean
+          acepta_quiebra_tecnica?: boolean
+          acepta_utilidad?: boolean
+          arrendamiento?: boolean
+          buro_bueno?: boolean
+          buro_excelente?: boolean
+          buro_regular?: boolean
+          cobertura_estatal?: boolean
+          cobertura_local?: boolean
+          cobertura_nacional?: boolean
+          cobertura_regional?: boolean
+          created_at?: string
+          credito_revolvente?: boolean
+          credito_simple?: boolean
+          exp_1_anio?: boolean
+          exp_2_o_mas?: boolean
+          exp_menor_1_anio?: boolean
+          factoraje?: boolean
+          garantia_aval?: boolean
+          garantia_contratos?: boolean
+          garantia_hipotecaria?: boolean
+          garantia_liquida?: boolean
+          garantia_patrimonial?: boolean
+          garantia_prendaria?: boolean
+          id?: string
+          mal_buro?: boolean
+          mas_rentable?: boolean
+          name: string
+          sector_comercio?: boolean
+          sector_industria?: boolean
+          sector_primario?: boolean
+          sector_servicios?: boolean
+          tiene_contrato?: boolean
+          tier?: string
+          tipo: string
+        }
+        Update: {
+          acepta_perdida?: boolean
+          acepta_quiebra_tecnica?: boolean
+          acepta_utilidad?: boolean
+          arrendamiento?: boolean
+          buro_bueno?: boolean
+          buro_excelente?: boolean
+          buro_regular?: boolean
+          cobertura_estatal?: boolean
+          cobertura_local?: boolean
+          cobertura_nacional?: boolean
+          cobertura_regional?: boolean
+          created_at?: string
+          credito_revolvente?: boolean
+          credito_simple?: boolean
+          exp_1_anio?: boolean
+          exp_2_o_mas?: boolean
+          exp_menor_1_anio?: boolean
+          factoraje?: boolean
+          garantia_aval?: boolean
+          garantia_contratos?: boolean
+          garantia_hipotecaria?: boolean
+          garantia_liquida?: boolean
+          garantia_patrimonial?: boolean
+          garantia_prendaria?: boolean
+          id?: string
+          mal_buro?: boolean
+          mas_rentable?: boolean
+          name?: string
+          sector_comercio?: boolean
+          sector_industria?: boolean
+          sector_primario?: boolean
+          sector_servicios?: boolean
+          tiene_contrato?: boolean
+          tier?: string
+          tipo?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
