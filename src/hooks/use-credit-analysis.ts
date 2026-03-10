@@ -148,8 +148,25 @@ function generateDecision(rating: Rating, metrics: ReturnType<typeof computeMetr
 export function useCreditAnalysis() {
   const { master } = useFinancialStore();
 
-  const sourceData = master ? fromMaster(master) : FALLBACK_DATA;
-  const usingRealData = !!master;
+  if (!master) {
+    return {
+      metrics: computeMetrics(FALLBACK_DATA),
+      score: 0,
+      rating: "R" as Rating,
+      label: "SIN DATOS",
+      strengths: [],
+      weaknesses: [],
+      risks: [],
+      recommendation: "No hay datos disponibles. Genera el MASTER primero.",
+      chartData: { revenueTrend: [], margins: [], leverage: [], liquidity: [] },
+      usingRealData: false,
+      empresa: "",
+      categories: [],
+    };
+  }
+
+  const sourceData = fromMaster(master);
+  const usingRealData = true;
 
   const metrics = computeMetrics(sourceData);
   const { score, rating, label } = computeScore(metrics);
