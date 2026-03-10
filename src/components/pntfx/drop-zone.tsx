@@ -41,6 +41,7 @@ export function DropZone({ onFileDrop, disabled }: DropZoneProps) {
       <input
         ref={inputRef}
         type="file"
+        accept=".xlsx,.xls,.csv,.pdf"
         className="hidden"
         onChange={handleChange}
         disabled={disabled}

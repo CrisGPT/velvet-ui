@@ -35,7 +35,7 @@ export function SmartUploadCard({
   title,
   expectedType,
   description = "Selecciona los archivos a cargar.",
-  accept = ".xlsx,.xls,.csv",
+  accept = ".xlsx,.xls,.csv,.pdf",
   documents,
   processingState,
   onFileUpload,
