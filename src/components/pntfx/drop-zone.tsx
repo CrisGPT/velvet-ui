@@ -41,6 +41,7 @@ export function DropZone({ onFileDrop, disabled }: DropZoneProps) {
       <input
         ref={inputRef}
         type="file"
+        accept=".xlsx,.xls,.csv,.pdf"
         className="hidden"
         onChange={handleChange}
         disabled={disabled}
@@ -59,7 +60,7 @@ export function DropZone({ onFileDrop, disabled }: DropZoneProps) {
           {dragging ? "Suelta el archivo aquí" : "Arrastra tu archivo aquí"}
         </p>
         <p className="text-xs mt-1 text-muted-foreground">
-          o haz clic para seleccionar
+          Solo archivos PDF y Excel (.xlsx, .xls, .csv)
         </p>
       </div>
     </div>
